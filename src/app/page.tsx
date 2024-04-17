@@ -17,7 +17,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
       <Card className="w-[300px] text-center">
         <CardHeader>
           <CardTitle>Welcome to Quizmify</CardTitle>

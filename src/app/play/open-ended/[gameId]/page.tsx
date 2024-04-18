@@ -1,4 +1,7 @@
+import OpenEnded from "@/components/open-ended";
+import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/nextauth";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -9,11 +12,30 @@ type Props = {
 export default async function PlayOpenEnded(props: Props) {
   const session = await getAuthSession();
 
+  if (!session?.user) {
+    return redirect("/");
+  }
+
   const { gameId } = props.params;
-  return (
-    <div>
-      <h1>MCQ</h1>
-      <p>Multiple Choice Questionsa: {gameId}</p>
-    </div>
-  );
+
+  const game = await prisma.game.findUnique({
+    where: {
+      id: gameId,
+    },
+    include: {
+      questions: {
+        select: {
+          id: true,
+          question: true,
+          answer: true,
+        },
+      },
+    },
+  });
+
+  if (!game || game.gameType !== "open_ended") {
+    return redirect("/quiz");
+  }
+
+  return <OpenEnded game={game} />;
 }

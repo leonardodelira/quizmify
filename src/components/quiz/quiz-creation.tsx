@@ -9,7 +9,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { CopyCheck, BookOpen } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 import React from "react";
 import { useToast } from "../ui/use-toast";
 import axios, { AxiosError } from "axios";
@@ -36,7 +35,7 @@ const QuizCreation = ({}: Props) => {
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
       topic: "",
-      type: "open_ended",
+      type: "mcq",
       amount: 3,
     },
   });
@@ -126,7 +125,7 @@ const QuizCreation = ({}: Props) => {
               <div className="flex justify-between">
                 <Button
                   variant={form.getValues("type") === "mcq" ? "default" : "secondary"}
-                  className="w-1/2 rounded-none rounded-l-lg"
+                  className="w-1/2 rounded-lg"
                   onClick={() => {
                     form.setValue("type", "mcq");
                   }}
@@ -134,7 +133,7 @@ const QuizCreation = ({}: Props) => {
                 >
                   <CopyCheck className="w-4 h-4 mr-2" /> Multiple Choice
                 </Button>
-                <Separator orientation="vertical" />
+                {/* <Separator orientation="vertical" />
                 <Button
                   variant={form.getValues("type") === "open_ended" ? "default" : "secondary"}
                   className="w-1/2 rounded-none rounded-r-lg"
@@ -142,7 +141,7 @@ const QuizCreation = ({}: Props) => {
                   type="button"
                 >
                   <BookOpen className="w-4 h-4 mr-2" /> Open Ended
-                </Button>
+                </Button> */}
               </div>
               <Button disabled={isPending} type="submit">
                 Submit

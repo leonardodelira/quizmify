@@ -1,35 +1,27 @@
-"use client";
-import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import WordCloud from "../word-cloud";
+import { prisma } from "@/lib/db";
 
 type Props = {};
 
-const HotTopicsCards = ({}: Props) => {
-  const router = useRouter();
+const HotTopicsCards = async ({}: Props) => {
+  const topics = await prisma.topic_count.findMany({});
+  const formattedTopics = topics.map((topic) => {
+    return {
+      text: topic.topic,
+      value: topic.count,
+    };
+  });
 
   return (
-    <Card className="col-span-4" onClick={() => router.push("/history")}>
+    <Card className="col-span-4">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Hot Topics</CardTitle>
-        <CardDescription>
-          Click on a topic to start a quiz on it!
-        </CardDescription>
+        <CardDescription>Click on a topic to start a quiz on it!</CardDescription>
       </CardHeader>
 
       <CardContent className="pl-2">
-        <WordCloud
-          formattedTopics={[
-            { text: "abc", value: 1 },
-            { text: "abc", value: 2 },
-          ]}
-        />
+        <WordCloud formattedTopics={formattedTopics} />
       </CardContent>
     </Card>
   );

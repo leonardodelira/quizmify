@@ -14,6 +14,7 @@ import { useToast } from "../ui/use-toast";
 import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import LoadingQuestions from "../loading-questions";
 
 type Props = {};
 
@@ -63,7 +64,7 @@ const QuizCreation = ({}: Props) => {
           } else if (form.getValues("type") === "open_ended") {
             router.push(`/play/open-ended/${gameId}`);
           }
-        }, 2000);
+        }, 1500);
       },
     });
   };
@@ -71,7 +72,7 @@ const QuizCreation = ({}: Props) => {
   form.watch(); //re-render the component, so that the form can be updated with the new values. Usefull for the buttons to change the type of the quiz. (Active/Desactive)
 
   if (showLoader) {
-    return <div>loading...</div>;
+    return <LoadingQuestions finished={finishedLoading} />;
   }
 
   return (
